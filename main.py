@@ -121,6 +121,32 @@ def get_local_time(): # получение местного времени
     local_time = utc_time + local_offset # Добавляем смещение к текущему времени UTC, чтобы получить местное время
     local_time_formatted = local_time.strftime("%H:%M:%S") # Форматируем время в формат часов, минут и секунд
     return local_time_formatted
+
+stop_event = threading.Event()
+def non_automatic(theme):
+    stop_event.set()
+    set_windows_theme(theme)
+
+def stop_theme():
+    stop_event.set()
+
+def start_automatic():
+    # Создаем и запускаем поток
+    thread = threading.Thread(target=automatic_theme)
+    thread.start()
+    
+def automatic_theme():
+    sunrise, sunset = automatic_data()
+    while not stop_event.is_set():
+        local_time = get_local_time()
+        print(sunrise, local_time, sunset)
+        # Проверяем, находимся ли мы в промежутке между восходом и заходом солнца
+        if sunrise < local_time < sunset:
+            set_windows_theme("light")  # Если да, выбираем светлую тему
+        else:
+            set_windows_theme("dark")   # Если нет, выбираем темную тему
+        time.sleep(60)
+
 def create_tray_icon(): # создание меню трея
     global icon  # Делаем иконку доступной везде в коде
     current_theme = get_current_theme()
