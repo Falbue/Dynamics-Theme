@@ -1,12 +1,17 @@
 app_name = 'Dynamics Theme'
 version = '1.0'
+
 import ctypes
 import pystray
 from PIL import Image
-import tkinter as tk
 import winreg
+import requests
+import ephem
+import pytz
+from datetime import datetime, timezone
+import threading
+import time
 
-app_name = 'Dynamics Theme'
 
 def set_windows_theme(theme): # изменение темы
     try:
