@@ -59,3 +59,16 @@ def create_tray_icon(): # создание икноки в трее
         pystray.MenuItem("Светлая", lambda: set_windows_theme('light'))
     )
     icon.run()
+
+# Создаем графический интерфейс
+root = tk.Tk()
+root.title(app_name)
+root.geometry("300x150")
+
+# Минимизируем окно в трей при запуске
+root.withdraw()
+
+# Запускаем приложение
+root.after(0, create_tray_icon)
+
+root.mainloop()
