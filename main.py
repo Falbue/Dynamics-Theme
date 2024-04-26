@@ -43,7 +43,7 @@ def get_current_theme(): # получение текущей темы
         print("Ошибка при получении текущей темы:", e)
         return None
 
-def create_tray_icon(): # создание икноки в трее
+def create_tray_icon(): # создание меню трея
     global icon  # Делаем иконку доступной везде в коде
     current_theme = get_current_theme()
     if current_theme is None:
