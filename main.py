@@ -1,3 +1,5 @@
+app_name = 'Dynamics Theme'
+version = '1.0'
 import ctypes
 import pystray
 from PIL import Image
