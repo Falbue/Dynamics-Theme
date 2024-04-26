@@ -97,6 +97,23 @@ def sun_time_local(latitude, longitude, sunrise_datetime_utc, sunset_datetime_ut
     except Exception as e:
         print("Ошибка при получении локального времени восхода и захода солнца:", e)
         return None, None
+
+def automatic_data(): # объединение функций
+    latitude, longitude = get_location()
+    if latitude is None or longitude is None:
+        return None
+    
+    sunrise_datetime_utc, sunset_datetime_utc = get_sunrise_and_sunset(latitude, longitude)
+    if sunrise_datetime_utc is None or sunset_datetime_utc is None:
+        return None
+
+    sunrise, sunset = sun_time_local(latitude, longitude, sunrise_datetime_utc, sunset_datetime_utc)
+    if sunrise is None or sunset is None:
+        return None
+    else:
+        print(f'Время восхода солнца: {sunrise}')
+        print(f'Время захода солнца: {sunset}')
+        return sunrise, sunset
 def create_tray_icon(): # создание меню трея
     global icon  # Делаем иконку доступной везде в коде
     current_theme = get_current_theme()
