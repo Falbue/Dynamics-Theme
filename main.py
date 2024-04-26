@@ -50,6 +50,17 @@ def get_current_theme(): # получение текущей темы
         print("Ошибка при получении текущей темы:", e)
         return None
 
+def get_location(): # получение координат
+    try:
+        response = requests.get('https://ipinfo.io/json')
+        data = response.json()
+        coordinates = data['loc'].split(',')
+        latitude = float(coordinates[0])
+        longitude = float(coordinates[1])
+        return latitude, longitude
+    except Exception as e:
+        print("Ошибка при получении координат:", e)
+        return None, None
 def create_tray_icon(): # создание меню трея
     global icon  # Делаем иконку доступной везде в коде
     current_theme = get_current_theme()
