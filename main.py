@@ -78,6 +78,25 @@ def get_sunrise_and_sunset(latitude, longitude): # получение восхо
     except Exception as e:
         print("Ошибка при определении времени восхода и захода солнца:", e)
         return None, None
+
+def sun_time_local(latitude, longitude, sunrise_datetime_utc, sunset_datetime_utc): # локальное время восхода солнца
+    try:
+        import datetime
+        # Получаем смещение местного времени относительно UTC
+        local_offset = datetime.datetime.now(datetime.timezone.utc).astimezone().utcoffset()
+
+        # Применяем смещение к времени восхода и захода солнца
+        sunrise_time_local = sunrise_datetime_utc + local_offset
+        sunset_time_local = sunset_datetime_utc + local_offset
+
+        # Преобразуем время в строковый формат
+        sunrise = sunrise_time_local.strftime('%H:%M:%S')
+        sunset = sunset_time_local.strftime('%H:%M:%S')
+
+        return sunrise, sunset
+    except Exception as e:
+        print("Ошибка при получении локального времени восхода и захода солнца:", e)
+        return None, None
 def create_tray_icon(): # создание меню трея
     global icon  # Делаем иконку доступной везде в коде
     current_theme = get_current_theme()
