@@ -42,3 +42,20 @@ def get_current_theme(): # получение текущей темы
     except Exception as e:
         print("Ошибка при получении текущей темы:", e)
         return None
+
+def create_tray_icon(): # создание икноки в трее
+    global icon  # Делаем иконку доступной везде в коде
+    current_theme = get_current_theme()
+    if current_theme is None:
+        return
+    
+    if current_theme:
+        icon = pystray.Icon("example", Image.open("lib/icon_light.png"), app_name)
+    else:
+        icon = pystray.Icon("example", Image.open("lib/icon_dark.png"), app_name)
+        
+    icon.menu = pystray.Menu( # кнопки в меню
+        pystray.MenuItem("Тёмная", lambda: set_windows_theme('dark')),
+        pystray.MenuItem("Светлая", lambda: set_windows_theme('light'))
+    )
+    icon.run()
