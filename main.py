@@ -114,6 +114,13 @@ def automatic_data(): # объединение функций
         print(f'Время восхода солнца: {sunrise}')
         print(f'Время захода солнца: {sunset}')
         return sunrise, sunset
+
+def get_local_time(): # получение местного времени
+    utc_time = datetime.now(timezone.utc) # Получаем текущее время в формате UTC
+    local_offset = utc_time.astimezone().utcoffset() # Получаем смещение местного времени относительно UTC
+    local_time = utc_time + local_offset # Добавляем смещение к текущему времени UTC, чтобы получить местное время
+    local_time_formatted = local_time.strftime("%H:%M:%S") # Форматируем время в формат часов, минут и секунд
+    return local_time_formatted
 def create_tray_icon(): # создание меню трея
     global icon  # Делаем иконку доступной везде в коде
     current_theme = get_current_theme()
