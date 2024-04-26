@@ -167,5 +167,7 @@ def create_tray_icon(): # создание меню трея
         menu_items.insert(0, pystray.MenuItem("Автоматическая", lambda: start_automatic()))
     icon.menu = pystray.Menu(*menu_items)
 
+    start_automatic()
+    icon.run()
 
-root.mainloop()
+create_tray_icon()
