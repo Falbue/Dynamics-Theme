@@ -147,6 +147,7 @@ def automatic_theme():
             set_windows_theme("dark")   # Если нет, выбираем темную тему
         time.sleep(60)
 
+
 def create_tray_icon(): # создание меню трея
     global icon  # Делаем иконку доступной везде в коде
     current_theme = get_current_theme()
@@ -165,17 +166,6 @@ def create_tray_icon(): # создание меню трея
     if automatic_data() is not None:
         menu_items.insert(0, pystray.MenuItem("Автоматическая", lambda: start_automatic()))
     icon.menu = pystray.Menu(*menu_items)
-    icon.run()
 
-# Создаем графический интерфейс
-root = tk.Tk()
-root.title(app_name)
-root.geometry("300x150")
-
-# Минимизируем окно в трей при запуске
-root.withdraw()
-
-# Запускаем приложение
-root.after(0, create_tray_icon)
 
 root.mainloop()
