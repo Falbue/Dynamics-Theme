@@ -61,6 +61,23 @@ def get_location(): # получение координат
     except Exception as e:
         print("Ошибка при получении координат:", e)
         return None, None
+
+def get_sunrise_and_sunset(latitude, longitude): # получение восхода и захода солнца
+    try:
+        observer = ephem.Observer()
+        observer.lat = str(latitude)
+        observer.lon = str(longitude)
+        
+        sunrise_time_utc = observer.next_rising(ephem.Sun())
+        sunset_time_utc = observer.next_setting(ephem.Sun())
+        
+        sunrise_datetime_utc = sunrise_time_utc.datetime()
+        sunset_datetime_utc = sunset_time_utc.datetime()
+        
+        return sunrise_datetime_utc, sunset_datetime_utc
+    except Exception as e:
+        print("Ошибка при определении времени восхода и захода солнца:", e)
+        return None, None
 def create_tray_icon(): # создание меню трея
     global icon  # Делаем иконку доступной везде в коде
     current_theme = get_current_theme()
