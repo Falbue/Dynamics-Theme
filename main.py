@@ -140,7 +140,7 @@ def automatic_theme():
     sunrise, sunset = automatic_data()
     while not stop_event.is_set():
         local_time = get_local_time()
-        print(sunrise, local_time, sunset)
+        print(f"Восход: {sunrise}\nТекущее время: {local_time}\nЗаход: {sunset}")
         # Проверяем, находимся ли мы в промежутке между восходом и заходом солнца
         if sunrise < local_time < sunset:
             set_windows_theme("light")  # Если да, выбираем светлую тему
