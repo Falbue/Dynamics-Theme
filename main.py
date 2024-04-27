@@ -1,5 +1,5 @@
 app_name = 'Dynamics Theme'
-version = '1.0'
+version = '1.1'
 
 import ctypes
 import pystray
