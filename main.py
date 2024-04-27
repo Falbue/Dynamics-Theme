@@ -122,8 +122,10 @@ def get_local_time(): # получение местного времени
     local_time_formatted = local_time.strftime("%H:%M:%S") # Форматируем время в формат часов, минут и секунд
     return local_time_formatted
 
-stop_event = threading.Event()
+
+
 def non_automatic(theme):
+    print("Автомтический режим выключен")
     stop_event.set()
     set_windows_theme(theme)
 
@@ -131,6 +133,8 @@ def stop_theme():
     stop_event.set()
 
 def start_automatic():
+    global stop_event
+    stop_event = threading.Event()
     # Создаем и запускаем поток
     thread = threading.Thread(target=automatic_theme)
     thread.start()
