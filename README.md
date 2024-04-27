@@ -7,13 +7,15 @@ __Dynamics Theme__ - это мини-приложение, которое зап
 > Автоматическая тема работает только при наличии интернета на устройстве.
 
 ### Используемые библиотеки:
-* ctypes
-* ystray
-* PIL (Python Imaging Library)
-* winreg
-* requests
-* ephem
-* pytz
-* datetime
-* threading
-* time `
+```
+import ctypes
+import pystray
+from PIL import Image
+import winreg
+import requests
+import ephem
+import pytz
+from datetime import datetime, timezone
+import threading
+import time
+```
