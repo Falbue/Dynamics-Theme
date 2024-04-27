@@ -149,7 +149,7 @@ def automatic_theme():
 
 
 def create_tray_icon(): # создание меню трея
-    global icon  # Делаем иконку доступной везде в коде
+    global icon
     current_theme = get_current_theme()
     if current_theme is None:
         return
@@ -165,9 +165,16 @@ def create_tray_icon(): # создание меню трея
     ]
     if automatic_data() is not None:
         menu_items.insert(0, pystray.MenuItem("Автоматическая", lambda: start_automatic()))
+    
+    # Добавляем кнопку закрытия
+    menu_items.append(pystray.MenuItem("Закрыть", lambda: hide_icon()))
+    
     icon.menu = pystray.Menu(*menu_items)
 
     start_automatic()
     icon.run()
+
+def hide_icon():
+    icon.stop()
 
 create_tray_icon()
