@@ -111,8 +111,6 @@ def automatic_data(): # объединение функций
     if sunrise is None or sunset is None:
         return None
     else:
-        print(f'Время восхода солнца: {sunrise}')
-        print(f'Время захода солнца: {sunset}')
         return sunrise, sunset
 
 def get_local_time(): # получение местного времени
