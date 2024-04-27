@@ -161,11 +161,11 @@ def create_tray_icon(): # создание меню трея
         icon = pystray.Icon("example", Image.open("lib/icon_dark.png"), app_name)
         
     menu_items = [
-        pystray.MenuItem("Тёмная", lambda: non_automatic('dark')),
-        pystray.MenuItem("Светлая", lambda: non_automatic('light'))
+        pystray.MenuItem("Тёмная ☾", lambda: select_theme('dark')),
+        pystray.MenuItem("Светлая ☼", lambda: select_theme('light'))
     ]
     if automatic_data() is not None:
-        menu_items.insert(0, pystray.MenuItem("Автоматическая", lambda: start_automatic()))
+        menu_items.insert(0, pystray.MenuItem("Автоматическая", lambda: select_theme('auto')))
     
     # Добавляем кнопку закрытия
     menu_items.append(pystray.MenuItem("Закрыть", lambda: hide_icon()))
