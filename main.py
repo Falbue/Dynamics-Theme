@@ -121,13 +121,16 @@ def get_local_time(): # получение местного времени
     return local_time_formatted
 
 # функции, для автоматической смены темы
-def non_automatic(theme):
-    print("Автомтический режим выключен")
+def select_theme(theme):
     stop_event.set()
-    set_windows_theme(theme)
-def stop_theme():
-    stop_event.set()
+    if theme == 'auto':
+        start_automatic()
+    else:
+        print("Автомтический режим выключен")
+        set_windows_theme(theme)
+
 def start_automatic():
+    print("Автомтический режим влючен")
     global stop_event
     stop_event = threading.Event()
     # Создаем и запускаем поток
