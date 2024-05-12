@@ -11,7 +11,7 @@ import pytz
 from datetime import datetime, timezone
 import threading
 import time
-
+import os
 
 def set_windows_theme(theme): # изменение темы
     try:
@@ -177,5 +177,6 @@ def create_tray_icon(): # создание меню трея
 
 def hide_icon():
     icon.stop()
+    os._exit(0)
 
 create_tray_icon()
