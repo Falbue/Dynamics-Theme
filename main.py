@@ -44,10 +44,9 @@ def get_current_theme(): # получение текущей темы
 def get_location(): # получение координат
     try:
         response = requests.get('https://ipinfo.io/json')
+        response.raise_for_status()
         data = response.json()
-        coordinates = data['loc'].split(',')
-        latitude = float(coordinates[0])
-        longitude = float(coordinates[1])
+        latitude, longitude = map(float, data['loc'].split(','))
         return latitude, longitude
     except Exception as e:
         print("Ошибка при получении координат:", e)
@@ -56,35 +55,20 @@ def get_location(): # получение координат
 def get_sunrise_and_sunset(latitude, longitude): # получение восхода и захода солнца
     try:
         observer = ephem.Observer()
-        observer.lat = str(latitude)
-        observer.lon = str(longitude)
-        
-        sunrise_time_utc = observer.next_rising(ephem.Sun())
-        sunset_time_utc = observer.next_setting(ephem.Sun())
-        
-        sunrise_datetime_utc = sunrise_time_utc.datetime()
-        sunset_datetime_utc = sunset_time_utc.datetime()
-        
-        return sunrise_datetime_utc, sunset_datetime_utc
+        observer.lat, observer.lon = str(latitude), str(longitude)
+        sunrise_time_utc = observer.next_rising(ephem.Sun()).datetime()
+        sunset_time_utc = observer.next_setting(ephem.Sun()).datetime()
+        return sunrise_time_utc, sunset_time_utc
     except Exception as e:
         print("Ошибка при определении времени восхода и захода солнца:", e)
         return None, None
 
-def sun_time_local(latitude, longitude, sunrise_datetime_utc, sunset_datetime_utc): # локальное время восхода солнца
+def sun_time_local(sunrise_datetime_utc, sunset_datetime_utc): # локальное время восхода солнца
     try:
-        import datetime
-        # Получаем смещение местного времени относительно UTC
-        local_offset = datetime.datetime.now(datetime.timezone.utc).astimezone().utcoffset()
-
-        # Применяем смещение к времени восхода и захода солнца
+        local_offset = datetime.now(timezone.utc).astimezone().utcoffset()
         sunrise_time_local = sunrise_datetime_utc + local_offset
         sunset_time_local = sunset_datetime_utc + local_offset
-
-        # Преобразуем время в строковый формат
-        sunrise = sunrise_time_local.strftime('%H:%M:%S')
-        sunset = sunset_time_local.strftime('%H:%M:%S')
-
-        return sunrise, sunset
+        return sunrise_time_local.strftime('%H:%M:%S'), sunset_time_local.strftime('%H:%M:%S')
     except Exception as e:
         print("Ошибка при получении локального времени восхода и захода солнца:", e)
         return None, None
@@ -98,18 +82,11 @@ def automatic_data(): # объединение функций
     if sunrise_datetime_utc is None or sunset_datetime_utc is None:
         return None
 
-    sunrise, sunset = sun_time_local(latitude, longitude, sunrise_datetime_utc, sunset_datetime_utc)
-    if sunrise is None or sunset is None:
-        return None
-    else:
-        return sunrise, sunset
+    return sun_time_local(sunrise_datetime_utc, sunset_datetime_utc)
 
 def get_local_time(): # получение местного времени
-    utc_time = datetime.now(timezone.utc) # Получаем текущее время в формате UTC
-    local_offset = utc_time.astimezone().utcoffset() # Получаем смещение местного времени относительно UTC
-    local_time = utc_time + local_offset # Добавляем смещение к текущему времени UTC, чтобы получить местное время
-    local_time_formatted = local_time.strftime("%H:%M:%S") # Форматируем время в формат часов, минут и секунд
-    return local_time_formatted
+    local_time = datetime.now().strftime("%H:%M:%S")
+    return local_time
 
 # функции, для автоматической смены темы
 def select_theme(theme):
