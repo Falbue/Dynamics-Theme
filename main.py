@@ -15,23 +15,18 @@ import os
 
 def set_windows_theme(theme): # изменение темы
     try:
-        # Открываем ключ реестра для тем
-        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", 0, winreg.KEY_WRITE)
-        
-        # Устанавливаем тему в соответствии с выбором
-        if theme == "light":
-            winreg.SetValueEx(key, "AppsUseLightTheme", 0, winreg.REG_DWORD, 1)
-            winreg.SetValueEx(key, "SystemUsesLightTheme", 0, winreg.REG_DWORD, 1)
-            icon.icon = Image.open("lib/icon_light.png")  # Изменяем иконку на светлую
-        elif theme == "dark":
-            winreg.SetValueEx(key, "AppsUseLightTheme", 0, winreg.REG_DWORD, 0)
-            winreg.SetValueEx(key, "SystemUsesLightTheme", 0, winreg.REG_DWORD, 0)
-            icon.icon = Image.open("lib/icon_dark.png")  # Изменяем иконку на тёмную
-        else:
-            print("Некорректная тема. Выберите 'light' или 'dark'.")
-            return False
-        
-        winreg.CloseKey(key)
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", 0, winreg.KEY_WRITE) as key:
+            if theme == "light":
+                winreg.SetValueEx(key, "AppsUseLightTheme", 0, winreg.REG_DWORD, 1)
+                winreg.SetValueEx(key, "SystemUsesLightTheme", 0, winreg.REG_DWORD, 1)
+                icon.icon = Image.open("lib/icon_light.png")  # Изменяем иконку на светлую
+            elif theme == "dark":
+                winreg.SetValueEx(key, "AppsUseLightTheme", 0, winreg.REG_DWORD, 0)
+                winreg.SetValueEx(key, "SystemUsesLightTheme", 0, winreg.REG_DWORD, 0)
+                icon.icon = Image.open("lib/icon_dark.png")  # Изменяем иконку на тёмную
+            else:
+                print("Некорректная тема. Выберите 'light' или 'dark'.")
+                return False
         return True
     except Exception as e:
         print("Ошибка при установке темы:", e)
@@ -39,12 +34,8 @@ def set_windows_theme(theme): # изменение темы
 
 def get_current_theme(): # получение текущей темы
     try:
-        # Открываем ключ реестра для текущей темы
-        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", 0, winreg.KEY_READ)
-        # Получаем значение текущей темы
-        current_theme = winreg.QueryValueEx(key, "AppsUseLightTheme")[0]
-        winreg.CloseKey(key)
-        # Возвращаем текущую тему (True для светлой, False для тёмной)
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", 0, winreg.KEY_READ) as key:
+            current_theme = winreg.QueryValueEx(key, "AppsUseLightTheme")[0]
         return current_theme
     except Exception as e:
         print("Ошибка при получении текущей темы:", e)
