@@ -88,7 +88,6 @@ def get_local_time(): # получение местного времени
     local_time = datetime.now().strftime("%H:%M:%S")
     return local_time
 
-# функции, для автоматической смены темы
 def select_theme(theme):
     stop_event.set()
     if theme == 'auto':
@@ -98,24 +97,26 @@ def select_theme(theme):
         set_windows_theme(theme)
 
 def start_automatic():
-    print("Автомтический режим влючен")
+    print("Автомтический режим включен")
     global stop_event
     stop_event = threading.Event()
-    # Создаем и запускаем поток
     thread = threading.Thread(target=automatic_theme)
-    thread.start()   
+    thread.start()
+
 def automatic_theme():
     sunrise, sunset = automatic_data()
+    if sunrise is None or sunset is None:
+        print("Не удалось получить данные для автоматического режима")
+        return
+    
     while not stop_event.is_set():
         local_time = get_local_time()
         print(f"Восход: {sunrise}\nТекущее время: {local_time}\nЗаход: {sunset}")
-        # Проверяем, находимся ли мы в промежутке между восходом и заходом солнца
         if sunrise < local_time < sunset:
-            set_windows_theme("light")  # Если да, выбираем светлую тему
+            set_windows_theme("light")
         else:
-            set_windows_theme("dark")   # Если нет, выбираем темную тему
+            set_windows_theme("dark")
         time.sleep(60)
-
 
 def create_tray_icon(): # создание меню трея
     global icon
@@ -123,23 +124,16 @@ def create_tray_icon(): # создание меню трея
     if current_theme is None:
         return
     
-    if current_theme:
-        icon = pystray.Icon("example", Image.open("lib/icon_light.png"), app_name)
-    else:
-        icon = pystray.Icon("example", Image.open("lib/icon_dark.png"), app_name)
+    icon = pystray.Icon("example", Image.open(f"lib/icon_{'light' if current_theme else 'dark'}.png"), app_name)
         
     menu_items = [
         pystray.MenuItem("Тёмная ☾", lambda: select_theme('dark')),
-        pystray.MenuItem("Светлая ☼", lambda: select_theme('light'))
+        pystray.MenuItem("Светлая ☼", lambda: select_theme('light')),
+        pystray.MenuItem("Автоматическая", lambda: select_theme('auto')),
+        pystray.MenuItem("Закрыть", lambda: hide_icon())
     ]
-    if automatic_data() is not None:
-        menu_items.insert(0, pystray.MenuItem("Автоматическая", lambda: select_theme('auto')))
-    
-    # Добавляем кнопку закрытия
-    menu_items.append(pystray.MenuItem("Закрыть", lambda: hide_icon()))
     
     icon.menu = pystray.Menu(*menu_items)
-
     start_automatic()
     icon.run()
 
