@@ -147,12 +147,23 @@ def create_tray_icon(): # создание меню трея
     
     icon = pystray.Icon("example", Image.open(f"lib/icon_{'light' if current_theme else 'dark'}.png"), app_name)
         
-    menu_items = [
-        pystray.MenuItem("Тёмная ☾", lambda: select_theme('dark')),
-        pystray.MenuItem("Светлая ☼", lambda: select_theme('light')),
-        pystray.MenuItem("Автоматическая", lambda: select_theme('auto')),
-        pystray.MenuItem("Закрыть", lambda: hide_icon())
-    ]
+    # Определяем язык и устанавливаем тексты для меню
+    language = get_system_language()
+    
+    if language == 'ru':
+        menu_items = [
+            pystray.MenuItem("Тёмная ☾", lambda: select_theme('dark')),
+            pystray.MenuItem("Светлая ☼", lambda: select_theme('light')),
+            pystray.MenuItem("Автоматическая", lambda: select_theme('auto')),
+            pystray.MenuItem("Закрыть", lambda: hide_icon())
+        ]
+    else:
+        menu_items = [
+            pystray.MenuItem("Dark ☾", lambda: select_theme('dark')),
+            pystray.MenuItem("Light ☼", lambda: select_theme('light')),
+            pystray.MenuItem("Automatic", lambda: select_theme('auto')),
+            pystray.MenuItem("Exit", lambda: hide_icon())
+        ]
     
     icon.menu = pystray.Menu(*menu_items)
     start_automatic()
