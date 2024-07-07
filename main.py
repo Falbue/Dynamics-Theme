@@ -32,18 +32,26 @@ def set_windows_theme(theme): # изменение темы
         print("Ошибка при установке темы:", e)
         return False
 
-# Функция для получения текущего языка системы
 def get_system_language():
-    user32 = ctypes.WinDLL('user32', use_last_error=True)
     kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
+    
+    # Получаем текущий язык системы
+    GetUserDefaultUILanguage = kernel32.GetUserDefaultUILanguage
+    GetUserDefaultUILanguage.restype = ctypes.c_uint
+    lcid = GetUserDefaultUILanguage()
 
+    # Константа для получения имени языка
     LOCALE_NAME_MAX_LENGTH = 85
-
+    LOCALE_SISO639LANGNAME = 0x59  # Локаль для ISO 639 языка
+    
     locale_name = ctypes.create_unicode_buffer(LOCALE_NAME_MAX_LENGTH)
-    user32.GetUserDefaultLocaleName(locale_name, LOCALE_NAME_MAX_LENGTH)
-    lang = locale_name.value[:2]
 
-    return lang
+    # Получаем имя языка по LCID
+    if kernel32.GetLocaleInfoW(lcid, LOCALE_SISO639LANGNAME, locale_name, LOCALE_NAME_MAX_LENGTH):
+        lang = locale_name.value[:2]
+        return lang
+    else:
+        return 'en'
 
 def get_current_theme(): # получение текущей темы
     try:
