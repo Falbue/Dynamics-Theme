@@ -18,7 +18,7 @@ __Dynamics Theme__ - это мини-приложение, которое зап
 * Определение текущего языка устройства для изменения языка приложения (только **en**/**ru**)
 
 ## В планах
-- [ x ] Изменение темы в Windows 11
+- [x] Изменение темы в Windows 11
 - [ ] Автоматическое обновление кода программы
 
 ## Текущие ошибки
@@ -44,7 +44,7 @@ Upon launch, the application defaults to automatic mode, which determines the cu
 * Automatically change the Windows 10 theme
 *Detect the current device language to change the application language (only en/ru)
 ## Plans
-- [ ] Change the theme on Windows 11
+- [x] Change the theme on Windows 11
 - [ ] Automatic program code updates
 ## Current Errors
 _None detected_
