@@ -13,8 +13,9 @@ import threading
 import time
 import os
 
-def set_windows_theme(theme): # изменение темы
+def set_windows_theme(theme):  # Обновленный параметр для иконки
     try:
+        # Открываем ключ реестра для изменения настроек темы
         with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", 0, winreg.KEY_WRITE) as key:
             if theme == "light":
                 winreg.SetValueEx(key, "AppsUseLightTheme", 0, winreg.REG_DWORD, 1)
@@ -27,6 +28,11 @@ def set_windows_theme(theme): # изменение темы
             else:
                 print("Некорректная тема. Выберите 'light' или 'dark'.")
                 return False
+
+        # Уведомляем Windows о необходимости перезапуска темы
+        ctypes.windll.user32.SendMessageW(0xFFFF, 0x001A, 0, 0)
+        
+        print(f"Тема успешно изменена на '{theme}'.")
         return True
     except Exception as e:
         print("Ошибка при установке темы:", e)
