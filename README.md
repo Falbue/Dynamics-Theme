@@ -20,6 +20,7 @@ __Dynamics Theme__ - это мини-приложение, которое зап
 ## В планах
 - [x] Изменение темы в Windows 11
 - [ ] Автоматическое обновление кода программы
+- [ ] Сделать процесс смены темы надёжнее, чтобы не требовалось вручную перезагружать Проводник на Windows 11 IoT Корпоративной LTSC
 
 ## Текущие ошибки
 _Не выявлено_
@@ -46,5 +47,6 @@ Upon launch, the application defaults to automatic mode, which determines the cu
 ## Plans
 - [x] Change the theme on Windows 11
 - [ ] Automatic program code updates
+- [ ] Make the theme changing more reliable, so that you don't need to manually restart the Explorer.exe
 ## Current Errors
 _None detected_
